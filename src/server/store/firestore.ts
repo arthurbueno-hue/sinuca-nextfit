@@ -1,6 +1,11 @@
 import "server-only";
 import { cert, getApps, initializeApp, type App } from "firebase-admin/app";
-import { getFirestore, type Firestore, type Transaction } from "firebase-admin/firestore";
+import {
+  getFirestore,
+  type Firestore,
+  type QueryDocumentSnapshot,
+  type Transaction,
+} from "firebase-admin/firestore";
 import type { Reader, Store, Tx, WithId } from "./types";
 
 let cached: Firestore | null = null;
@@ -39,7 +44,7 @@ export function firestoreStore(): Store {
     },
     async <T,>(col: string) => {
       const snap = await db().collection(col).get();
-      return snap.docs.map((d) => ({ ...(d.data() as T), id: d.id }) as WithId<T>);
+      return snap.docs.map((d: QueryDocumentSnapshot) => ({ ...(d.data() as T), id: d.id }) as WithId<T>);
     },
   );
 
@@ -55,7 +60,7 @@ export function firestoreStore(): Store {
           },
           async list<T>(col: string) {
             const snap = await t.get(db().collection(col));
-            return snap.docs.map((d) => ({ ...(d.data() as T), id: d.id }) as WithId<T>);
+            return snap.docs.map((d: QueryDocumentSnapshot) => ({ ...(d.data() as T), id: d.id }) as WithId<T>);
           },
           set: (path, data) => void t.set(db().doc(path), strip(data)),
           update: (path, data) => void t.update(db().doc(path), strip(data) as Record<string, unknown>),
