@@ -108,8 +108,6 @@ A Railway faz o build (`npm run build`) e sobe (`npm start`) sozinha, e a cada `
 ### 4. Primeiro acesso
 Entre com o Google usando um e-mail de ADM, vá em **ADM → Novo campeonato** (os dados do 1º campeonato já vêm preenchidos) e clique em **Criar**. Teste também pelo celular e com um Gmail pessoal, que deve ser bloqueado.
 
-> Alternativa: o código também roda na Vercel + Firestore (`DATA_BACKEND=firestore` e `FIREBASE_SERVICE_ACCOUNT` com o JSON da service account em base64, usando as regras de [`firestore.rules`](firestore.rules)).
-
 ---
 
 ## Fluxo do campeonato
@@ -132,7 +130,7 @@ Entre com o Google usando um e-mail de ADM, vá em **ADM → Novo campeonato** (
 src/lib/tournament/    lógica pura (sorteio, votos, prazos) + testes
 src/server/actions/    ações (inscrição, voto, ADM), validadas no servidor, + testes de ponta a ponta
 src/server/queries.ts  leitura → dados sem e-mail
-src/server/store/      PostgreSQL (produção), Firestore (alternativa) ou memória (dev)
+src/server/store/      PostgreSQL (produção) ou memória (dev)
 src/components/        chave, modal da partida, inscrição, regras, pódio
 src/auth.ts            login Google + restrição de domínio
 ```

@@ -1,6 +1,5 @@
 import "server-only";
 import { Pool } from "pg";
-import { firestoreStore } from "./firestore";
 import { memoryStore } from "./memory";
 import { postgresStore } from "./postgres";
 import type { Store } from "./types";
@@ -9,14 +8,13 @@ let store: Store | null = null;
 
 /**
  * Qual banco usar (variável DATA_BACKEND):
- * - "postgres"  → PostgreSQL (Railway). Usa DATABASE_URL.
- * - "firestore" → Firebase (FIREBASE_SERVICE_ACCOUNT).
- * - "memory"    → só para testar local; some ao reiniciar.
- * Sem DATA_BACKEND: Postgres se houver DATABASE_URL, senão Firestore.
+ * - "postgres" → PostgreSQL (Railway). Usa DATABASE_URL.
+ * - "memory"   → só para testar local; some ao reiniciar.
+ * Sem DATA_BACKEND: Postgres se houver DATABASE_URL, senão erro.
  */
 export function getStore(): Store {
   if (store) return store;
-  const backend = process.env.DATA_BACKEND ?? (process.env.DATABASE_URL ? "postgres" : "firestore");
+  const backend = process.env.DATA_BACKEND ?? (process.env.DATABASE_URL ? "postgres" : undefined);
 
   if (backend === "memory") {
     if (process.env.NODE_ENV === "production") {
@@ -33,8 +31,6 @@ export function getStore(): Store {
       ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: false } : undefined,
     });
     store = postgresStore(pool);
-  } else if (backend === "firestore") {
-    store = firestoreStore();
   } else {
     throw new Error(`DATA_BACKEND inválido: ${backend}`);
   }
