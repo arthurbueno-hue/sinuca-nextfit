@@ -39,10 +39,10 @@ export function publicSession(token: { sub?: unknown; email?: unknown }) {
 
 /**
  * Login de TESTE, só na máquina de quem desenvolve (`npm run dev` + DEV_LOGIN=1).
- * Em produção (build da Vercel) é impossível: NODE_ENV=production e VERCEL=1.
+ * Em produção é impossível: NODE_ENV=production (e Railway/Vercel marcam o ambiente).
  */
 export function localTestLoginEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
-  return env.NODE_ENV === "development" && env.DEV_LOGIN === "1" && !env.VERCEL;
+  return env.NODE_ENV === "development" && env.DEV_LOGIN === "1" && !env.VERCEL && !env.RAILWAY_ENVIRONMENT;
 }
 
 /** Ferramentas de teste local (inscritos falsos). Só com banco em memória no `next dev`. */

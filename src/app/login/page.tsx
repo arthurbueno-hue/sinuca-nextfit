@@ -70,7 +70,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               <input
                 name="user"
                 className="input"
-                placeholder="ex.: arthur.bueno ou joao"
+                placeholder="ex.: joao ou maria.silva"
                 style={{ flex: 1, minWidth: 0 }}
                 autoCapitalize="none"
                 autoCorrect="off"

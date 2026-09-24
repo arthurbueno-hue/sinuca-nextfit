@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   reactStrictMode: true,
-  serverExternalPackages: ["firebase-admin"],
+  serverExternalPackages: ["firebase-admin", "pg"],
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

@@ -39,9 +39,12 @@ describe("login de teste local", () => {
     expect(localTestLoginEnabled(env({ NODE_ENV: "development", DEV_LOGIN: "1" }))).toBe(true);
     expect(localTestLoginEnabled(env({ NODE_ENV: "development" }))).toBe(false);
   });
-  it("nunca liga em produção nem na Vercel, mesmo com DEV_LOGIN=1", () => {
+  it("nunca liga em produção, na Vercel ou na Railway, mesmo com DEV_LOGIN=1", () => {
     expect(localTestLoginEnabled(env({ NODE_ENV: "production", DEV_LOGIN: "1" }))).toBe(false);
     expect(localTestLoginEnabled(env({ NODE_ENV: "development", DEV_LOGIN: "1", VERCEL: "1" }))).toBe(false);
     expect(localTestLoginEnabled(env({ NODE_ENV: "test", DEV_LOGIN: "1" }))).toBe(false);
+    expect(localTestLoginEnabled(env({ NODE_ENV: "development", DEV_LOGIN: "1", RAILWAY_ENVIRONMENT: "production" }))).toBe(
+      false,
+    );
   });
 });
